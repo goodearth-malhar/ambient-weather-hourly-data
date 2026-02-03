@@ -1,4 +1,4 @@
-name: Daily and Monthly Weather Aggregation
+name: Daily and Monthly Weather Aggregation (Metric)
 
 on:
   schedule:
@@ -19,20 +19,28 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Run daily aggregation
+      - name: Install dependencies
         run: |
-          python scripts/aggregate_daily.py
+          pip install requests
 
-      - name: Run monthly aggregation
+      # --------------------------
+      # DAILY AGGREGATION (METRIC)
+      # --------------------------
+      - name: Run daily metric aggregation
         run: |
-          python scripts/aggregate_monthly.py
+          python scripts/aggregate_daily_metric.py
 
-      - name: Run backfill (daily + monthly)
+      # --------------------------
+      # MONTHLY AGGREGATION (SAFE)
+      # --------------------------
+      - name: Run monthly metric aggregation (safe)
         run: |
-          python scripts/backfill_daily.py
-          python scripts/backfill_monthly.py
+          python scripts/aggregate_monthly_metric_safe.py
 
-      - name: Commit and push results
+      # --------------------------
+      # COMMIT RESULTS
+      # --------------------------
+      - name: Commit and push aggregated data
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
@@ -42,6 +50,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No new aggregated data to commit"
           else
-            git commit -m "Update daily and monthly weather aggregates"
+            git commit -m "Update daily and monthly metric weather data"
             git push
           fi
