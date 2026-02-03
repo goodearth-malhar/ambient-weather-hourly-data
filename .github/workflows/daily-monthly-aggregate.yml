@@ -1,0 +1,47 @@
+name: Daily and Monthly Weather Aggregation
+
+on:
+  schedule:
+    # Run once every day at 00:20 IST (18:50 UTC)
+    - cron: "50 18 * * *"
+  workflow_dispatch:
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run daily aggregation
+        run: |
+          python scripts/aggregate_daily.py
+
+      - name: Run monthly aggregation
+        run: |
+          python scripts/aggregate_monthly.py
+
+      - name: Run backfill (daily + monthly)
+        run: |
+          python scripts/backfill_daily.py
+          python scripts/backfill_monthly.py
+
+      - name: Commit and push results
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add data/daily data/monthly
+
+          if git diff --cached --quiet; then
+            echo "No new aggregated data to commit"
+          else
+            git commit -m "Update daily and monthly weather aggregates"
+            git push
+          fi
