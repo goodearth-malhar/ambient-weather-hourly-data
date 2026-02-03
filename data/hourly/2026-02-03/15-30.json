@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-02-03T15:30:00+05:30",
+  "source": "ambientweather-averaged-30min",
+  "outdoor": {
+    "temperature": 73.41,
+    "feelsLike": 73.11,
+    "dewPoint": 56.71,
+    "humidity": 58.48
+  },
+  "wind": {
+    "speed": 1.88,
+    "gust": 14.76,
+    "directionDeg": 90.38
+  },
+  "rain": {
+    "hourly": 0,
+    "daily": 0,
+    "weekly": 0
+  },
+  "pressure": {
+    "relative": 30.16,
+    "absolute": 27.48
+  },
+  "indoor": {
+    "temperature": 77.55,
+    "humidity": 50.26
+  },
+  "solar": {
+    "uv": 1.14,
+    "radiation": 142.6
+  }
+}
