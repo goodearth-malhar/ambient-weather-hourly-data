@@ -1,0 +1,31 @@
+{
+  "timestamp": "2026-01-14T22:19:29.029000+05:30",
+  "source": "ambientweather-backfill",
+  "outdoor": {
+    "temperature": 73.0,
+    "feelsLike": 73.1,
+    "dewPoint": 60.96,
+    "humidity": 66.0
+  },
+  "wind": {
+    "speed": 2.46,
+    "gust": 4.47,
+    "directionDeg": 78.0
+  },
+  "rain": {
+    "hourly": 0.0,
+    "daily": 0.0,
+    "weekly": 0.008,
+    "monthly": 0.039,
+    "yearly": 12.791,
+    "total": 12.791
+  },
+  "pressure": {
+    "relative": 30.168,
+    "absolute": 27.495
+  },
+  "solar": {
+    "uv": 0.0,
+    "radiation": 0.0
+  }
+}

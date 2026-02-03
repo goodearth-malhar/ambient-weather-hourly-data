@@ -1,0 +1,31 @@
+{
+  "timestamp": "2025-11-14T13:49:26.936000+05:30",
+  "source": "ambientweather-backfill",
+  "outdoor": {
+    "temperature": 81.3,
+    "feelsLike": 82.71,
+    "dewPoint": 63.56,
+    "humidity": 55.0
+  },
+  "wind": {
+    "speed": 1.79,
+    "gust": 2.24,
+    "directionDeg": 46.0
+  },
+  "rain": {
+    "hourly": 0.0,
+    "daily": 0.0,
+    "weekly": 0,
+    "monthly": 0.0,
+    "yearly": 12.642,
+    "total": 12.642
+  },
+  "pressure": {
+    "relative": 30.073,
+    "absolute": 27.401
+  },
+  "solar": {
+    "uv": 2.0,
+    "radiation": 224.32
+  }
+}

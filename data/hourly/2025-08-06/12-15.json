@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-08-06T12:15:00+05:30",
+  "source": "ambientweather-backfill",
+  "outdoor": {
+    "temperature": 81.5,
+    "feelsLike": 84.76,
+    "dewPoint": 69.02,
+    "humidity": 66.0
+  },
+  "wind": {
+    "speed": 1.79,
+    "gust": 3.36,
+    "directionDeg": 343.0
+  },
+  "rain": {
+    "hourly": NaN,
+    "daily": NaN,
+    "weekly": 

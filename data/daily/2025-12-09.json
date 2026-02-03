@@ -1,0 +1,30 @@
+{
+  "date": "2025-12-09",
+  "units": {
+    "temperature": "C",
+    "wind": "m/s",
+    "pressure": "hPa",
+    "rain": "mm"
+  },
+  "outdoor": {
+    "avgTemperature": 22.03,
+    "avgFeelsLike": 22.12,
+    "avgDewPoint": 15.15,
+    "avgHumidity": 65.96
+  },
+  "wind": {
+    "avgSpeed": 0.72,
+    "maxGust": 6.1,
+    "avgDirection": 103.36
+  },
+  "pressure": {
+    "avgRelative": 1019.96
+  },
+  "solar": {
+    "avgUv": 1.23,
+    "avgRadiation": 148.44
+  },
+  "rain": {
+    "total": 0.0
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "date": "2026-01-31",
+  "units": {
+    "temperature": "C",
+    "wind": "m/s",
+    "pressure": "hPa",
+    "rain": "mm"
+  },
+  "outdoor": {
+    "avgTemperature": 22.47,
+    "avgFeelsLike": 22.05,
+    "avgDewPoint": 9.34,
+    "avgHumidity": 46.02
+  },
+  "wind": {
+    "avgSpeed": 0.74,
+    "maxGust": 5.6,
+    "avgDirection": 106.83
+  },
+  "pressure": {
+    "avgRelative": 1021.16
+  },
+  "solar": {
+    "avgUv": 1.29,
+    "avgRadiation": 156.82
+  },
+  "rain": {
+    "total": 0.0
+  }
+}

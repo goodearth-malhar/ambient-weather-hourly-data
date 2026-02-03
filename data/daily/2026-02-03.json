@@ -1,17 +1,30 @@
 {
   "date": "2026-02-03",
+  "units": {
+    "temperature": "C",
+    "wind": "m/s",
+    "pressure": "hPa",
+    "rain": "mm"
+  },
   "outdoor": {
-    "avgTemperature": 73.44,
-    "avgHumidity": 58.97
+    "avgTemperature": 22.08,
+    "avgFeelsLike": 21.92,
+    "avgDewPoint": 13.56,
+    "avgHumidity": 61.37
   },
   "wind": {
-    "avgSpeed": 1.84,
-    "maxGust": 14.76
+    "avgSpeed": 0.66,
+    "maxGust": 6.6,
+    "avgDirection": 89.94
   },
   "pressure": {
-    "avgRelative": 30.15
+    "avgRelative": 1021.69
+  },
+  "solar": {
+    "avgUv": 1.58,
+    "avgRadiation": 187.08
   },
   "rain": {
-    "total": 0
+    "total": 0.0
   }
 }

@@ -1,0 +1,31 @@
+{
+  "timestamp": "2025-11-09T17:49:26.370000+05:30",
+  "source": "ambientweather-backfill",
+  "outdoor": {
+    "temperature": null,
+    "feelsLike": null,
+    "dewPoint": null,
+    "humidity": null
+  },
+  "wind": {
+    "speed": null,
+    "gust": null,
+    "directionDeg": null
+  },
+  "rain": {
+    "hourly": null,
+    "daily": null,
+    "weekly": null,
+    "monthly": null,
+    "yearly": null,
+    "total": null
+  },
+  "pressure": {
+    "relative": 30.035,
+    "absolute": 27.362
+  },
+  "solar": {
+    "uv": null,
+    "radiation": null
+  }
+}
