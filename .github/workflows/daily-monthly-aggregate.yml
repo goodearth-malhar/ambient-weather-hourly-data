@@ -23,23 +23,14 @@ jobs:
         run: |
           pip install requests
 
-      # --------------------------
-      # DAILY AGGREGATION (METRIC)
-      # --------------------------
       - name: Run daily metric aggregation
         run: |
           python scripts/aggregate_daily_metric.py
 
-      # --------------------------
-      # MONTHLY AGGREGATION (SAFE)
-      # --------------------------
       - name: Run monthly metric aggregation (safe)
         run: |
           python scripts/aggregate_monthly_metric_safe.py
 
-      # --------------------------
-      # COMMIT RESULTS
-      # --------------------------
       - name: Commit and push aggregated data
         run: |
           git config user.name "github-actions"
