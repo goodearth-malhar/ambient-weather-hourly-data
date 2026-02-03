@@ -1,0 +1,18 @@
+{
+  "month": "2026-02",
+  "daysAggregated": 1,
+  "outdoor": {
+    "avgTemperature": 73.44,
+    "avgHumidity": 58.97
+  },
+  "wind": {
+    "avgSpeed": 1.84,
+    "maxGust": 14.76
+  },
+  "pressure": {
+    "avgRelative": 30.15
+  },
+  "rain": {
+    "total": 0
+  }
+}
