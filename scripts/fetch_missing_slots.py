@@ -5,8 +5,15 @@ import requests
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
-API_KEY = os.environ["AMBIENT_API_KEY"]
-APP_KEY = os.environ["AMBIENT_APP_KEY"]
+# =====================
+# CONFIG
+# =====================
+API_KEY = os.environ.get("AMBIENT_API_KEY")
+APP_KEY = os.environ.get("AMBIENT_APP_KEY")
+
+if not API_KEY or not APP_KEY:
+    raise Exception("Missing Ambient Weather API keys")
+
 BASE_URL = "https://api.ambientweather.net/v1/devices"
 
 IST = ZoneInfo("Asia/Kolkata")
@@ -15,26 +22,40 @@ UTC = ZoneInfo("UTC")
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HOURLY_DIR = os.path.join(PROJECT_ROOT, "data", "hourly")
 
+MAX_LOOKBACK_HOURS = 6   # safe + cheap
+SLOT_MINUTES = 30
+
+# =====================
+# HELPERS
+# =====================
 def safe_get(url, params, retries=3, delay=5):
-    for _ in range(retries):
-        r = requests.get(url, params=params, timeout=20)
-        if r.status_code == 429:
+    for i in range(retries):
+        try:
+            r = requests.get(url, params=params, timeout=20)
+            if r.status_code == 429:
+                time.sleep(delay)
+                delay *= 2
+                continue
+            r.raise_for_status()
+            return r.json()
+        except Exception:
+            if i == retries - 1:
+                raise
             time.sleep(delay)
-            delay *= 2
-            continue
-        r.raise_for_status()
-        return r.json()
-    raise Exception("Ambient API rate limit exceeded")
 
 def expected_slots(now):
-    slots = []
-    end = now.replace(minute=30 if now.minute >= 30 else 0, second=0, microsecond=0)
-    start = end - timedelta(hours=6)
+    end = now.replace(
+        minute=30 if now.minute >= 30 else 0,
+        second=0,
+        microsecond=0
+    )
+    start = end - timedelta(hours=MAX_LOOKBACK_HOURS)
 
+    slots = []
     cur = start
     while cur <= end:
         slots.append(cur)
-        cur += timedelta(minutes=30)
+        cur += timedelta(minutes=SLOT_MINUTES)
 
     return slots
 
@@ -43,24 +64,38 @@ def slot_path(ts):
     file_name = ts.strftime("%H-%M.json")
     return os.path.join(HOURLY_DIR, date_dir, file_name)
 
-# ----------------------------
-# Fetch device
-# ----------------------------
+def avg(values):
+    clean = [v for v in values if isinstance(v, (int, float))]
+    return round(sum(clean) / len(clean), 2) if clean else None
+
+def max_or_none(values):
+    clean = [v for v in values if isinstance(v, (int, float))]
+    return max(clean) if clean else None
+
+# =====================
+# FETCH DEVICE
+# =====================
 devices = safe_get(BASE_URL, {
     "apiKey": API_KEY,
     "applicationKey": APP_KEY
 })
 
+if not devices:
+    raise Exception("No Ambient Weather devices found")
+
 mac = devices[0]["macAddress"]
 
 now_ist = datetime.now(IST)
-
 slots = expected_slots(now_ist)
 
+# =====================
+# MAIN LOOP
+# =====================
 for slot_end in slots:
-    path = slot_path(slot_end)
-    if os.path.exists(path):
-        continue
+    out_path = slot_path(slot_end)
+
+    if os.path.exists(out_path):
+        continue  # already collected
 
     slot_start = slot_end - timedelta(minutes=30)
 
@@ -79,13 +114,10 @@ for slot_end in slots:
     )
 
     if not records:
+        print(f"No data for slot {slot_end}")
         continue
 
-    def avg(vals):
-        vals = [v for v in vals if isinstance(v, (int, float))]
-        return round(sum(vals) / len(vals), 2) if vals else None
-
-    out = {
+    data = {
         "timestamp": slot_end.isoformat(),
         "source": "ambientweather-self-healing",
         "outdoor": {
@@ -96,7 +128,7 @@ for slot_end in slots:
         },
         "wind": {
             "speed": avg([r.get("windspeedmph") for r in records]),
-            "gust": max((r.get("windgustmph", 0) for r in records), default=0),
+            "gust": max_or_none([r.get("windgustmph") for r in records]),
             "directionDeg": avg([r.get("winddir") for r in records]),
         },
         "pressure": {
@@ -109,8 +141,8 @@ for slot_end in slots:
         }
     }
 
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(out, f, indent=2)
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
 
-    print(f"Backfilled slot {slot_end}")
+    print(f"Recovered slot: {slot_end}")
