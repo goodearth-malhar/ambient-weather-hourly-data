@@ -1,12 +1,16 @@
-name: Hourly Weather (Self-Healing)
+name: Hourly Weather Ingestion (Self-Healing)
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "*/15 * * * *"   # every 15 minutes
   workflow_dispatch:
 
+concurrency:
+  group: hourly-weather
+  cancel-in-progress: true
+
 jobs:
-  collect:
+  ingest:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,7 +22,7 @@ jobs:
 
       - run: pip install requests
 
-      - name: Fetch missing hourly slots
+      - name: Fetch & backfill hourly data
         env:
           AMBIENT_API_KEY: ${{ secrets.AMBIENT_API_KEY }}
           AMBIENT_APP_KEY: ${{ secrets.AMBIENT_APP_KEY }}
@@ -33,8 +37,8 @@ jobs:
           git add data/hourly
 
           if git diff --cached --quiet; then
-            echo "No new data"
+            echo "No new hourly data"
           else
-            git commit -m "Backfill missing hourly weather slots"
+            git commit -m "Add self-healed hourly weather data"
             git push
           fi
