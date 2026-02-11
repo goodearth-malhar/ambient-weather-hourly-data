@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-02-11T13:00:00+05:30",
+  "source": "ambientweather-self-healing",
+  "outdoor": {
+    "temperature": 72.85,
+    "feelsLike": 72.1,
+    "dewPoint": 52.18,
+    "humidity": 51.76
+  },
+  "wind": {
+    "speed": 1.96,
+    "gust": 14.76,
+    "directionDeg": 98.14
+  },
+  "pressure": {
+    "relative": 30.15,
+    "absolute": 27.48
+  },
+  "solar": {
+    "uv": 1.32,
+    "radiation": 157.51
+  }
+}
